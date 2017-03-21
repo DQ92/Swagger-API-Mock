@@ -1,0 +1,10 @@
+"use strict";
+var fs = require('fs');
+var FileManager_1 = require("./src/FileManager");
+var swaggerJSON = "j.json";
+var wordsToRemove = ["Dto", "List", "View", "ListView"];
+var serverJSFilename = "server.js";
+var swiftEntitiesFilename = "entities.swift";
+var json = JSON.parse(fs.readFileSync('j.json').toString());
+console.log(json);
+new FileManager_1.FileManager("");
