@@ -2,13 +2,16 @@
  * Created by daniel on 21.03.2017.
  */
 
+import fs = require('fs');
+
 export class FileManager {
-    greeting: string;
-    constructor(message: string) {
-        this.greeting = message;
-        console.log("aSDASDasdasda asd as")
+
+    constructor() {
+
     }
-    greet() {
-        return "Hello, " + this.greeting;
+
+    parseJSON(fileName: string) {
+        var json = JSON.parse(fs.readFileSync(fileName).toString());
+        return json
     }
 }

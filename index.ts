@@ -4,20 +4,24 @@
 "use strict";
 import fs = require('fs');
 import {FileManager} from "./src/FileManager";
+import {SwaggerParser} from "./src/SwaggerParser";
 
 
 // Config  //
-var swaggerJSON = "j.json";
+var swaggerJSONFilename = "j.json";
 var wordsToRemove = ["Dto", "List", "View", "ListView"];
 
 var serverJSFilename = "server.js";
 var swiftEntitiesFilename = "entities.swift";
 
 
-var json = JSON.parse(fs.readFileSync('j.json').toString());
-console.log(json)
+var fileManager = new FileManager();
+let swaggerJSON = fileManager.parseJSON(swaggerJSONFilename);
 
-new FileManager("")
+
+let swaggerParser = new SwaggerParser(swaggerJSON)
+
+
 
 // function paths(json) {
 //     var paths = json["paths"]
