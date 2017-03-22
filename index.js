@@ -9,3 +9,4 @@ var fileManager = new FileManager_1.FileManager();
 var swaggerJSON = fileManager.parseJSON(swaggerJSONFilename);
 var swaggerParser = new SwaggerParser_1.SwaggerParser(swaggerJSON);
 var serverGenerator = new SwaggerParser_1.ServerGenerator(swaggerParser.endpoints, swaggerParser);
+fileManager.saveFileServer(serverGenerator.serverContent);

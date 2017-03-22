@@ -1,9 +1,7 @@
 import {isNullOrUndefined} from "util";
 import faker = require('faker');
+import {ServerFaker} from "./ServerFaker";
 
-/**
- * Created by daniel on 21.03.2017.
- */
 
 export class SwaggerParser {
     endpoints: [SwaggerEndpoint]
@@ -207,24 +205,33 @@ export class ServerGenerator {
     swaggerParser: SwaggerParser
     endpoints: [SwaggerEndpoint]
 
+    serverContent: string
+
     constructor(endpoints: [SwaggerEndpoint], swaggerParser: SwaggerParser) {
         this.swaggerParser = swaggerParser
         this.endpoints = endpoints
 
-        var serverContent = ""
+        this.serverContent =
+        "import jsonServer = require('json-server');\n" +
+        "import {ServerFaker} from './src/ServerFaker';\n"+
+        "var server = jsonServer.create()\n"+
+        "server.listen(3001, function () {console.log('OMNIA JSON Server is running!')})\n\n\n" +
+            "let s = new ServerFaker() \n\n"
+
         var self = this
         for (let endpoint of this.endpoints) {
             let content = this.generateEndpointCode(endpoint)
-            serverContent = serverContent + content
-            // this.log(content)
+            this.serverContent = this.serverContent + content
         }
+
     }
 
     generateEndpointCode(endpoint: SwaggerEndpoint) {
+        let s = new ServerFaker()
+
         if(endpoint.responseType == ResponseType.Object) {
             let modelName = endpoint.modelName
             let method = endpoint.methods[0]
-
 
             let model = this.swaggerParser.getModelByName(modelName)
             var endpointName = endpoint.endpointName.replace("{", ":")
@@ -233,20 +240,38 @@ export class ServerGenerator {
             let res = ""
 
             if(isNullOrUndefined(model)) {
-                return
+                return ""
             } else {
-                let fakeModel = this.generateFakeModel(1, model)
+                return "" // content
+            }
+        } else {
+            let modelName = endpoint.modelName
+            let method = endpoint.methods[0]
 
-                let content = "\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
-                    "\tres.status(" + 200 + ").send(\n\t" + res + "\n)\n})"
+            let model = this.swaggerParser.getModelByName(modelName)
+            var endpointName = endpoint.endpointName.replace("{", ":")
+            endpointName = endpointName.replace("}", "")
 
-                // this.log("\n")
-                // this.log(endpointName)
+            var res = ""
+
+            if(isNullOrUndefined(model)) {
+                return ""
+            } else {
+                // let fakeModel = this.generateFakeModel(1, model)
+                let model = this.swaggerParser.getModelByName(modelName)
+                let list = s.generateArrayStringMethod(model, {})
+
+
+                res = "s.generateArrayStringMethod("+ JSON.stringify(model) + ", req.query)"
+
+                // var idx = Number(req.params.id) - 1
+
+
+                let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
+                    "\tres.status(" + 200 + ").send(\n\t" + res + "\n)})"
 
                 return content
             }
-        } else {
-
         }
     }
 
@@ -261,21 +286,6 @@ export class ServerGenerator {
             "totalPages": 10
         }
     }
-
-    // generateFakeModel(id, model) {
-    //     var temp = clone(model)
-    //
-    //     var fields = Object.keys(model)
-    //     for(i in fields) {
-    //         var fieldName = fields[i]
-    //         var type = temp[fieldName]
-    //         var fake = generateFakeByType(id, type, fieldName)
-    //         if(fake != undefined) {
-    //             temp[fieldName] = fake
-    //         }
-    //     }
-    //     return temp
-    // }
 
     generateFakeByType(id: number, type: string, fieldName: string) {
         var fake = undefined
@@ -331,7 +341,6 @@ export class ServerGenerator {
             if(fieldName.indexOf("longitude") !== -1) {
                 return faker.address.longitude()
             }
-
             return 9123
         }  else if("bool" == type) {
             return false
@@ -352,18 +361,6 @@ export class ServerGenerator {
                 }
             }
         );
-
-        this.log("\n\n")
-        this.log(model.properties)
-
-        // for(var field in fields) {
-        // var fieldName = fields[i]
-        // var type = temp[fieldName]
-        // var fake = generateFakeByType(id, type, fieldName)
-        // if(fake != undefined) {
-        //     model[fieldName] = fake
-        // }
-        // }
     }
 
     generateFakeDate(id: number) {
