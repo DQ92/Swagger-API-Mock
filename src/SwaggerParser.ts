@@ -67,6 +67,8 @@ export class SwaggerModel {
                 self.prepare(key, temp[key])
             }
         }
+        this.log("\n\n\n\n")
+        this.log(name)
         this.log(this.properties)
     }
 
@@ -117,7 +119,7 @@ export class SwaggerModel {
     }
 
     log(msg: any) {
-        // console.log(msg)
+        console.log(msg)
     }
 }
 
@@ -242,7 +244,11 @@ export class ServerGenerator {
             if(isNullOrUndefined(model)) {
                 return ""
             } else {
-                return "" // content
+                res = "s.generateObjectStringMethod("+ JSON.stringify(model) + ", req.params)"
+
+                let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
+                    "\tres.status(" + 200 + ").send(\n\t" + res + "\n)})"
+                return content
             }
         } else {
             let modelName = endpoint.modelName
@@ -257,15 +263,10 @@ export class ServerGenerator {
             if(isNullOrUndefined(model)) {
                 return ""
             } else {
-                // let fakeModel = this.generateFakeModel(1, model)
-                let model = this.swaggerParser.getModelByName(modelName)
-                let list = s.generateArrayStringMethod(model, {})
-
+                // let model = this.swaggerParser.getModelByName(modelName)
+                // let list = s.generateArrayStringMethod(model, {})
 
                 res = "s.generateArrayStringMethod("+ JSON.stringify(model) + ", req.query)"
-
-                // var idx = Number(req.params.id) - 1
-
 
                 let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
                     "\tres.status(" + 200 + ").send(\n\t" + res + "\n)})"
@@ -368,6 +369,6 @@ export class ServerGenerator {
     }
 
     log(msg: any) {
-        console.log(msg)
+        // console.log(msg)
     }
 }

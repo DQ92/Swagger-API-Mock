@@ -9,15 +9,33 @@ import {SwaggerModel, SwaggerParser} from "./SwaggerParser";
 
 export class ServerFaker {
 
-    // swaggerParser: SwaggerParser
-    //
-    // constructor(swaggerParser: SwaggerParser) {
-    //     this.swaggerParser = swaggerParser
-    // }
+
+    generateObjectStringMethod(model: SwaggerModel, params: any) {
+        let properties = model.properties
+        var id = 9999
+
+        console.log(params)
+        if(!isNullOrUndefined(params.id)) {
+            id = Number(params.id)
+        }
+
+        var fields = Object.keys(properties)
+        var copy = this.clone(properties)
+        for (var i in fields) {
+            var fieldName = fields[i]
+            var type = copy[fieldName].type
+             var fake = this.generateFakeByType(id, type, fieldName)
+            if (fake != undefined) {
+                copy[fieldName] = fake
+            }
+        }
+
+        this.log(copy)
+        return copy
+    }
 
     generateArrayStringMethod(model: SwaggerModel, params: any) {
         let properties = model.properties
-
 
         var page = 0
         var size = 10
@@ -27,10 +45,6 @@ export class ServerFaker {
         if(!isNullOrUndefined(params['size'])) {
             size = Number(params['size'])
         }
-
-        this.log("Params")
-        this.log("size: " + size)
-        this.log("page: " + page)
 
         var start: number = (size * page) + 1
         var list = new Array()
@@ -47,16 +61,28 @@ export class ServerFaker {
                     copy[fieldName] = fake
                 }
             }
-            // this.log("\n: copy")
-            // this.log(copy)
             list.push(copy)
         }
-        return list
+
+        var isLast = false
+        if(page >= 5) {
+            isLast = true
+            list = []
+        }
+
+        let response = {
+            "contents": list,
+            'isLast': isLast,
+            'page': page + 1,
+            'size': size
+        }
+
+        // this.log(response)
+        return response
     }
 
     clone(obj) {
         var clone = {};
-        // clone.prototype = obj.prototype;
         for (var property in obj) clone[property] = obj[property];
         return clone;
     }
