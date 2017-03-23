@@ -43,6 +43,38 @@ export class SwaggerParser {
         //     }
         // }
     }
+
+    getModelByNameWithInner(name: string) {
+        let model = this.json["definitions"][name]
+        let self = this
+
+        Object.getOwnPropertyNames(model.properties).forEach(
+            function (val, idx, array) {
+
+                //check is array in content
+                let type = model['properties'][val].type
+                if (type[0] == '[') {
+                    if (type != '[string]' && type != '[number]') {
+                        var objName = type.replace("]", "")
+                        objName = objName.replace("[", "")
+
+                        let modelFromDef = self.getModelByNameWithInner(objName)['properties']
+                        model['properties'][val] = []
+                        model['properties'][val].push(modelFromDef)
+
+                        // console.log("\n INNER | była Wymagana zmiana z inner z: " + val)
+                        // console.log(model['properties'][val])
+                    }
+                }
+            });
+
+        // console.log("\n\n INNER |  ")
+        // console.log(model)
+
+        return model
+    }
+
+
 }
 
 
@@ -208,11 +240,8 @@ enum FieldType {
 export class ServerGenerator {
     swaggerParser: SwaggerParser
     endpoints: [SwaggerEndpoint]
-
     serverContent: string
     s = new ServerFaker()
-
-
 
     constructor(endpoints: [SwaggerEndpoint], swaggerParser: SwaggerParser) {
         this.swaggerParser = swaggerParser
@@ -227,10 +256,11 @@ export class ServerGenerator {
 
         var self = this
         for (let endpoint of this.endpoints) {
-            let content = this.generateEndpointCode(endpoint)
-            this.serverContent = this.serverContent + content
+            if(endpoint.endpointName == '/omnia/news') {
+                let content = this.generateEndpointCode(endpoint)
+                this.serverContent = this.serverContent + content
+            }
         }
-
     }
 
     generateEndpointCode(endpoint: SwaggerEndpoint) {
@@ -253,37 +283,32 @@ export class ServerGenerator {
             Object.getOwnPropertyNames(properties).forEach(
                 function (val, idx, array) {
 
-                    self.log("\n Prop: " + val)
+                    self.log("\n Prop: " + val + " idx: " + idx)
                     self.log(model['properties'][val])
 
-                //check is array in content
-                if (!isNullOrUndefined(properties['content'])) {
-                    if (!isNullOrUndefined(properties['content'].type)) {
-                        if (properties['content'].type[0] == '[') {
-                            let type = properties['content'].type
-                            if (type != '[string]' && type != '[number]') {
-                                var objContent = type.replace("]", "")
-                                objContent = objContent.replace("[", "")
+                    //check is array in content
+                    let type = model['properties'][val].type
+                    if (type[0] == '[') {
+                        if (type != '[string]' && type != '[number]') {
+                            var objName = type.replace("]", "")
+                            objName = objName.replace("[", "")
 
-                                model['properties']['content'] = self.swaggerParser.getModelByName(objContent)['properties']
+                            let modelFromDef = self.swaggerParser.getModelByNameWithInner(objName)['properties']
+                            model['properties'][val] = []
+                            model['properties'][val].push(modelFromDef)
 
-                                // this.log("\n Zmiana z: " + objContent)
-                                // this.log("modelName: " + modelName)
-                                // this.log("endpoint: " + endpointName)
-                                // this.log(model['properties'])
-                            }
+                            self.log("\n GEN |  Wymagana zmiana z: " + val)
+                            self.log( model['properties'][val])
                         }
                     }
                 }
-
-                }
             );
 
-            let modelToString = model['properties']
+            let modelToString = model//['properties']
             let str = JSON.stringify(modelToString)
-            // this.log("\n\n\n\n")
-            // this.log("endpoint: " + endpointName)
-            // this.log(str)
+            this.log("\n\n\n\n")
+            this.log("KONIEC | stringify : " + endpointName)
+            this.log(str)
 
             res = "s.generateObjectStringMethod("+ str + ", req.params)"
              let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
