@@ -9,29 +9,79 @@ import {SwaggerModel, SwaggerParser} from "./SwaggerParser";
 
 export class ServerFaker {
 
+    generateFakeObject(model: {}) {
+        let self = this
+
+        console.log("Model")
+        console.log(model)
+        var fields = Object.keys(model)
+        console.log(fields)
+
+        var id = 0
+        for(let val of fields) {
+            console.log(val)
+
+            var fieldName = fields[val]
+
+            console.log(fieldName)
+            // var type = model[fieldName].type
+            //
+            // var fake = this.generateFakeByType(id, type, fieldName)
+            // if (fake != undefined) {
+            //     model[fieldName] = fake
+            // }
+
+            id = id + 1
+        };
+
+        return model
+    }
 
     generateObjectStringMethod(model: SwaggerModel, params: any) {
         let properties = model.properties
         var id = 9999
 
+        var self = this
         console.log(params)
+
         if(!isNullOrUndefined(params.id)) {
-            id = Number(params.id)
+            // id = Number(params.id)
         }
 
-        var fields = Object.keys(properties)
-        var copy = this.clone(properties)
-        for (var i in fields) {
-            var fieldName = fields[i]
-            var type = copy[fieldName].type
-             var fake = this.generateFakeByType(id, type, fieldName)
-            if (fake != undefined) {
-                copy[fieldName] = fake
-            }
-        }
 
-        this.log(copy)
-        return copy
+        Object.getOwnPropertyNames(properties).forEach(
+            function (val, idx, array) {
+
+                console.log("\n\n val: " + val + " / " + properties[val])
+
+                if(!isNullOrUndefined(properties[val])) {
+                    console.log(model[val])
+                    var fake = self.generateFakeByType(id, properties[val].type, val)
+                    if (fake != undefined) {
+                        properties[val] = fake
+                    }
+                } else {
+                    //check is array in content
+                    //let type = model[val].type
+                    ///if (type[0] == '[') {
+                        //if (type != '[string]' && type != '[number]') {
+                        //     var objName = type.replace("]", "")
+                            // objName = objName.replace("[", "")
+
+
+                            let newFake = self.generateFakeObject(properties[val])
+
+                            console.log("\n\n newFake: ")
+                            console.log(newFake)
+
+                            // model[val][0] = newFake
+
+                }
+            });
+
+
+        this.log(model)
+        return model
     }
 
     generateArrayStringMethod(model: SwaggerModel, params: any) {
@@ -146,7 +196,7 @@ export class ServerFaker {
             }
 
             return 9123
-        }  else if("bool" == type) {
+        }  else if("bool" == type || "boolean" == type) {
             return false
         }
 

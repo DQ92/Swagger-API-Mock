@@ -283,8 +283,8 @@ export class ServerGenerator {
             Object.getOwnPropertyNames(properties).forEach(
                 function (val, idx, array) {
 
-                    self.log("\n Prop: " + val + " idx: " + idx)
-                    self.log(model['properties'][val])
+                    // self.log("\n Prop: " + val + " idx: " + idx)
+                    // self.log(model['properties'][val])
 
                     //check is array in content
                     let type = model['properties'][val].type
@@ -297,8 +297,8 @@ export class ServerGenerator {
                             model['properties'][val] = []
                             model['properties'][val].push(modelFromDef)
 
-                            self.log("\n GEN |  Wymagana zmiana z: " + val)
-                            self.log( model['properties'][val])
+                            // self.log("\n GEN |  Wymagana zmiana z: " + val)
+                            // self.log( model['properties'][val])
                         }
                     }
                 }
@@ -307,8 +307,9 @@ export class ServerGenerator {
             let modelToString = model//['properties']
             let str = JSON.stringify(modelToString)
             this.log("\n\n\n\n")
-            this.log("KONIEC | stringify : " + endpointName)
-            this.log(str)
+            // this.log("KONIEC | stringify : " + endpointName)
+            // this.log(str)
+
 
             res = "s.generateObjectStringMethod("+ str + ", req.params)"
              let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
