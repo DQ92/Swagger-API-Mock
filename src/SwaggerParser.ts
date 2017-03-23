@@ -28,18 +28,20 @@ export class SwaggerParser {
     }
 
     getModelByName(name: string) {
-        for (let model of this.models) {
+        return this.json["definitions"][name]
+
+        // for (let model of this.models) {
             // console.log(model)
             // console.log("getModelByName")
             // console.log(name)
-            if(model.originalModelName == name) {
 
-
-                let m = new SwaggerModel(name, this.json["definitions"][name])
-                // console.log(m)
-                return m
-            }
-        }
+        //     if(model.originalModelName == name) {
+        //         let m = new SwaggerModel(name, this.json["definitions"][name])
+        //         // console.log("\n\n name: " + name)
+        //         // console.log(m)
+        //         return m
+        //     }
+        // }
     }
 }
 
@@ -119,7 +121,7 @@ export class SwaggerModel {
     }
 
     log(msg: any) {
-        console.log(msg)
+        // console.log(msg)
     }
 }
 
@@ -208,6 +210,9 @@ export class ServerGenerator {
     endpoints: [SwaggerEndpoint]
 
     serverContent: string
+    s = new ServerFaker()
+
+
 
     constructor(endpoints: [SwaggerEndpoint], swaggerParser: SwaggerParser) {
         this.swaggerParser = swaggerParser
@@ -229,27 +234,61 @@ export class ServerGenerator {
     }
 
     generateEndpointCode(endpoint: SwaggerEndpoint) {
-        let s = new ServerFaker()
+        let modelName = endpoint.modelName
+        let method = endpoint.methods[0]
+        let model = this.swaggerParser.getModelByName(modelName)
+        if(isNullOrUndefined(model)) {
+            this.log("\n ERROR! Model undefined!  Dla " + endpoint.endpointName)
+            return ""
+        }
 
         if(endpoint.responseType == ResponseType.Object) {
-            let modelName = endpoint.modelName
-            let method = endpoint.methods[0]
-
-            let model = this.swaggerParser.getModelByName(modelName)
             var endpointName = endpoint.endpointName.replace("{", ":")
             endpointName = endpointName.replace("}", "")
+            let properties = model['properties']
 
+            let self = this
             let res = ""
 
-            if(isNullOrUndefined(model)) {
-                return ""
-            } else {
-                res = "s.generateObjectStringMethod("+ JSON.stringify(model) + ", req.params)"
+            Object.getOwnPropertyNames(properties).forEach(
+                function (val, idx, array) {
 
-                let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
+                    self.log("\n Prop: " + val)
+                    self.log(model['properties'][val])
+
+                //check is array in content
+                if (!isNullOrUndefined(properties['content'])) {
+                    if (!isNullOrUndefined(properties['content'].type)) {
+                        if (properties['content'].type[0] == '[') {
+                            let type = properties['content'].type
+                            if (type != '[string]' && type != '[number]') {
+                                var objContent = type.replace("]", "")
+                                objContent = objContent.replace("[", "")
+
+                                model['properties']['content'] = self.swaggerParser.getModelByName(objContent)['properties']
+
+                                // this.log("\n Zmiana z: " + objContent)
+                                // this.log("modelName: " + modelName)
+                                // this.log("endpoint: " + endpointName)
+                                // this.log(model['properties'])
+                            }
+                        }
+                    }
+                }
+
+                }
+            );
+
+            let modelToString = model['properties']
+            let str = JSON.stringify(modelToString)
+            // this.log("\n\n\n\n")
+            // this.log("endpoint: " + endpointName)
+            // this.log(str)
+
+            res = "s.generateObjectStringMethod("+ str + ", req.params)"
+             let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
                     "\tres.status(" + 200 + ").send(\n\t" + res + "\n)})"
-                return content
-            }
+            return content
         } else {
             let modelName = endpoint.modelName
             let method = endpoint.methods[0]
@@ -259,20 +298,14 @@ export class ServerGenerator {
             endpointName = endpointName.replace("}", "")
 
             var res = ""
-
-            if(isNullOrUndefined(model)) {
-                return ""
-            } else {
                 // let model = this.swaggerParser.getModelByName(modelName)
                 // let list = s.generateArrayStringMethod(model, {})
+             res = "s.generateArrayStringMethod("+ JSON.stringify(model) + ", req.query)"
 
-                res = "s.generateArrayStringMethod("+ JSON.stringify(model) + ", req.query)"
-
-                let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
+            let content = "\n\n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
                     "\tres.status(" + 200 + ").send(\n\t" + res + "\n)})"
 
-                return content
-            }
+            return content
         }
     }
 
@@ -369,6 +402,6 @@ export class ServerGenerator {
     }
 
     log(msg: any) {
-        // console.log(msg)
+        console.log(msg)
     }
 }

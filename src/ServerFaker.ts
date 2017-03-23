@@ -176,6 +176,6 @@ export class ServerFaker {
     }
 
     log(msg: any) {
-        console.log(msg)
+        // console.log(msg)
     }
 }
