@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
+    },
+    "files": [
+        "index.ts",
+        "server.ts",
+        "src/SwaggerEndpoint.ts",
+        "src/SwaggerModel.ts",
+        "src/node.d.ts",
+        "src/ServerFaker.ts",
+        "src/FileManager.ts",
+        "src/SwaggerParser.ts"
+    ]
+}
