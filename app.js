@@ -4,8 +4,9 @@
 
 var fs = require('fs');
 var faker = require('faker')
-var wordsToRemove = ["Dto", "List", "View", "ListView"]
 
+var serverHelper = require('./ServerHelper');
+serverHelper.init()
 
 var json = JSON.parse(fs.readFileSync('j.json').toString());
 
@@ -63,15 +64,15 @@ function generateServerContentString(endpointsAndModelsList) {
                             "size": 1,
                             "page": 0
                         };
-                        var resp = generateFakeArrayResponse(model, testParams)
-
-                        var response = JSON.stringify(resp)
+                        var resp = serverHelper.generateFakeArrayResponse(model, testParams)
+                        // var response = JSON.stringify(resp)
                         // log("\n\n RESP: " + endpointName)
-                        // log(resp)
+                        log(resp)
 
-                        // var response = "serverHelper.generateFakeByType(1, " + "'" + modelName + "'" + "," + "'" + modelName +"'"+ ")"
-                        content = content + "\n \n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
-                            "\tres.status(" + 200 + ").send(\n\t" + response + "\n)\n})"
+                        // var response = "serverHelper.generateFakeArrayResponse(serverHelper.getModelByName('"+modelName+"'), req.query)"
+                        // content = content + "\n \n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
+                        //         "console.log(req.query)\n" +
+                        //     "\tres.status(" + 200 + ").send(\n\t" + response + "\n)\n})"
                     // }
                 }
             }
@@ -84,14 +85,18 @@ function generateServerContentString(endpointsAndModelsList) {
 
 function generateFakeArrayResponse(model, params) {
     if(params != undefined && model['content'] != undefined) {
-        var size = params.size
+        var size = 10
         var page = params.page
+
+        if(params['size'] != undefined) {
+            size = Number(params.size)
+        }
+        if(params['page'] != undefined) {
+            page = Number(params.page)
+        }
 
         var start = (size * page) + 1
         var list = new Array()
-
-        log("\n\n\n Model")
-        log(model)
 
         for(var idx=start; idx<(size+start); idx++) {
             var fakeResult = test(model)
@@ -111,8 +116,6 @@ function generateFakeArrayResponse(model, params) {
             'size': size
         };
 
-        // log("\n\n RESPONSE ARRAY")
-        // log(response)
         return response
 
     } else {
