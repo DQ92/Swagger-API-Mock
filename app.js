@@ -12,20 +12,178 @@ var json = JSON.parse(fs.readFileSync('j.json').toString());
 var dtos = json['definitions'] //['PageOfLawFirmList']['properties']
 // log(dtos)
 
-for(var d in dtos) {
-    var result = test(dtos[d].properties, 1)
+// for(var d in dtos) {
+//     var result = test(dtos[d].properties, 1)
+//     log("\n\n" + d + " \n ")
+//     log(result)
+// }
 
-    log("\n\n" + d + " \n ")
-    log(result)
+var endpointsAndModels = generateEndpoints(json['paths'])
+
+var contentToSave = generateServerContentString(endpointsAndModels)
+saveFileServer(contentToSave)
+
+
+
+function generateServerContentString(endpointsAndModelsList) {
+    var content = "var serverHelper = require('./ServerHelper');\n" +
+        "serverHelper.init()\n\n" +
+        "var faker = require('faker')\n" +
+        "var jsonServer = require('json-server')\n" +
+        "var server = jsonServer.create()\n" +
+        "var middlewares = jsonServer.defaults()\n" +
+        "server.listen(3000, function () {" +
+        "console.log('OMNIA JSON Server is running!')" +
+        "})\n\n\n"
+
+    var list = endpointsAndModelsList
+    Object.getOwnPropertyNames(list).forEach(
+        function (val, idx, array) {
+            var modelName = list[val].modelName
+            var endpointName = list[val].endpointName
+            var method = "get"
+            var responseType = list[val].responseType // array or object
+
+            if(modelName != undefined) {
+                if (isSimpleType(modelName)) {
+                    // var fake = generateFakeByType(1, modelName, modelName)
+                    // var response = JSON.stringify(fake)
+                    // var response = "serverHelper.generateFakeByType(1, " + "'" + modelName + "'" + "," + "'" + modelName +"'"+ ")"
+                    // content = content + "\n \n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
+                    //     "\tres.status(" + 200 + ").send(\n\t" + response + "\n)\n})"
+                } else {
+                    // if(responseType == "object") {
+                    //     var model = getModelByName(modelName)
+                    //     var fakeModel = test(model, 1)
+                    //
+                    // } else { // array
+
+                        var model = getModelByName(modelName)
+                        var testParams = {
+                            "size": 1,
+                            "page": 0
+                        };
+                        var resp = generateFakeArrayResponse(model, testParams)
+
+                        var response = JSON.stringify(resp)
+                        // log("\n\n RESP: " + endpointName)
+                        // log(resp)
+
+                        // var response = "serverHelper.generateFakeByType(1, " + "'" + modelName + "'" + "," + "'" + modelName +"'"+ ")"
+                        content = content + "\n \n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
+                            "\tres.status(" + 200 + ").send(\n\t" + response + "\n)\n})"
+                    // }
+                }
+            }
+        }
+    );
+
+    return content
 }
 
-// var result = test(dto, 1)
-// log("\n WYNIK:")
-// log(result)
+
+function generateFakeArrayResponse(model, params) {
+    if(params != undefined && model['content'] != undefined) {
+        var size = params.size
+        var page = params.page
+
+        var start = (size * page) + 1
+        var list = new Array()
+
+        log("\n\n\n Model")
+        log(model)
+
+        for(var idx=start; idx<(size+start); idx++) {
+            var fakeResult = test(model)
+            list.push(fakeResult['content'])
+        }
+
+        var isLast = false
+        if(page >= 5) {
+            isLast = true
+            list = []
+        }
+
+        var response = {
+            "contents": list,
+            'last': isLast,
+            'page': page + 1,
+            'size': size
+        };
+
+        // log("\n\n RESPONSE ARRAY")
+        // log(response)
+        return response
+
+    } else {
+        // var result = test(model, 1)
+        // return result
+    }
+}
 
 
+function generateEndpoints(endpoints) {
+    var endpointsAndModels = []
 
-function test(obj, countInArray) {
+    Object.getOwnPropertyNames(endpoints).forEach(
+        function (val, idx, array) {
+            // log("\n")
+            // log(val)
+
+            var methods = json["paths"][val]
+            var modelName = undefined
+            var endpointName = val.replace("{", ":")
+            endpointName = endpointName.replace("}", "")
+
+            for (var method in methods) {
+                if(method != "get") {
+                    break
+                }
+                var t = json["paths"][val][method]
+                var responses = Object.keys(t["responses"]);
+                var responseType = "object"
+                if(t["responses"]['200'] != undefined) {
+                    var response200 = t["responses"]['200']
+
+                    var description = response200['description']
+                    if (description == "OK") {
+                        var schema = response200['schema']
+                        if(schema != undefined) {
+                            if(schema['type'] == undefined) {
+                                var ref = schema["$ref"]
+                                modelName = getModelName(ref)
+                            } else {
+                                responseType = "array"
+                                var type = schema['type']
+                                var ref = schema["items"]['$ref']
+                                if(ref != undefined) {
+                                    modelName = getModelName(ref)
+                                } else {
+                                    modelName = schema["items"].type
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    log("\nBłąd in generateEndpoints()\n")
+                    return
+                }
+            }
+
+            if(modelName != undefined) {
+                endpointsAndModels.push({
+                    "endpointName": endpointName,
+                    "modelName": modelName,
+                    "responseType": responseType
+                })
+            }
+        }
+    );
+
+    return endpointsAndModels
+}
+
+function test(obj) {
     var idx = 0
     for (var field in obj) {
         var type = obj[field]['type']
@@ -36,12 +194,7 @@ function test(obj, countInArray) {
                 var refModelName = modelNameIfRefInArray(obj, field)
                 if(refModelName != undefined) {
                     var innerModel = getModelByName(refModelName)
-                    // var tempList = []
-                    // for(var i=0; i<countInArray; i=i+1) {
-                    //     var t = test(innerModel, 1)
-                    //     tempList.push(t)
-                    // }
-                    obj[field] = test(innerModel, 1)
+                    obj[field] = test(innerModel)
                 } else { // Lista prostych typów
 
                     var typeInArray = obj[field]['items'].type.replace("[", "")
@@ -55,14 +208,17 @@ function test(obj, countInArray) {
                     var innerModel = json["definitions"][refModelName]
                     obj[field] = test(innerModel)
                 } else {
-                    log("ERROR! Unknown type! : " + obj[field] + " / " + field)
+                    //log("ERROR! Unknown type! : " + obj[field] + " / " + field)
                 }
             }
         }
         idx = idx + 1
     }
-
     return obj
+}
+
+function getModelName(ref) {
+    return ref.replace("#/definitions/", "")
 }
 
 function modelNameIfRefInArray(obj, fieldName) {
@@ -94,8 +250,6 @@ function generateFakeList(typeInArray, fieldName, count) {
     }
     return tempList
 }
-
-
 
 function getModelByName(name) {
     return json["definitions"][name].properties
@@ -200,4 +354,14 @@ function clone(obj) {
     clone.prototype = obj.prototype;
     for (var property in obj) clone[property] = obj[property];
     return clone;
+}
+
+function saveFileServer(content) {
+    var filename = "server.js"
+    fs.writeFile(filename, content, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+        log("\n ----- The file was saved! type \"node " + filename + "\" in your console -----\n");
+    });
 }

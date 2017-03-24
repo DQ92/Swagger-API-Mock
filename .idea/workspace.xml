@@ -37,13 +37,6 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/readdirp/test/bed/root_file2.ext2" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/readdirp/test/bed/root_file3.ext3" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/string-template/coverage/sort-arrow-sprite.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/Swagger-API-Mock.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index.js.map" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/j.json" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.bin/babel" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.bin/babel-doctor" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.bin/babel-external-helpers" />
@@ -8462,14 +8455,10 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/zip-object/index.js" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/zip-object/package.json" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/zip-object/test/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/FileManager.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ServerFaker.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/SwaggerParser.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/node.d.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tsconfig.json" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server.ts" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -8497,8 +8486,8 @@
       <file leaf-file-name="index.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state relative-caret-position="180">
+              <caret line="12" column="35" lean-forward="true" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
               <folding>
                 <element signature="e#157#203#0" expanded="true" />
               </folding>
@@ -8519,11 +8508,10 @@
       <file leaf-file-name="SwaggerParser.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SwaggerParser.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="33" column="33" lean-forward="true" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+            <state relative-caret-position="362">
+              <caret line="215" column="5" lean-forward="true" selection-start-line="215" selection-start-column="5" selection-end-line="215" selection-end-column="5" />
               <folding>
                 <element signature="n#SwaggerModel#0" expanded="false" />
-                <element signature="n#SwaggerEndpoint#0" expanded="false" />
                 <element signature="n#!!block;n#generateFakeByType#0;n#ServerGenerator#0" expanded="false" />
                 <element signature="e#11215#12763#0" expanded="false" />
               </folding>
@@ -8534,22 +8522,11 @@
       <file leaf-file-name="ServerFaker.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ServerFaker.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="23" column="39" lean-forward="true" selection-start-line="23" selection-start-column="39" selection-end-line="23" selection-end-column="39" />
+            <state relative-caret-position="213">
+              <caret line="118" column="25" lean-forward="true" selection-start-line="118" selection-start-column="25" selection-end-line="118" selection-end-column="25" />
               <folding>
-                <element signature="n#!!block;n#generateArrayStringMethod#0;n#ServerFaker#0" expanded="false" />
                 <element signature="n#!!block;n#generateFakeByType#0;n#ServerFaker#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerFaker.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ServerFaker.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="18" column="24" lean-forward="false" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -8557,10 +8534,41 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="34" column="32" lean-forward="false" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
+            <state relative-caret-position="66">
+              <caret line="188" column="37" lean-forward="true" selection-start-line="188" selection-start-column="37" selection-end-line="188" selection-end-column="37" />
               <folding>
+                <element signature="n#!!block;n#generateEndpoints#0" expanded="false" />
+                <element signature="n#!!block;n#getModelName#0" expanded="false" />
                 <element signature="n#!!block;n#isSimpleType#0" expanded="false" />
+                <element signature="n#!!block;n#generateFakeByType#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerHelper.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ServerHelper.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="54" lean-forward="false" selection-start-line="12" selection-start-column="54" selection-end-line="12" selection-end-column="54" />
+              <folding>
+                <element signature="e#223#2192#0" expanded="false" />
+                <element signature="e#276#1666#0" expanded="false" />
+                <element signature="e#1694#1832#0" expanded="false" />
+                <element signature="e#1773#1806#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="40" column="2" lean-forward="true" selection-start-line="40" selection-start-column="2" selection-end-line="40" selection-end-column="2" />
+              <folding>
+                <marker date="1490390323000" expanded="true" signature="439:480" ph="{...}" />
+                <marker date="1490390323000" expanded="true" signature="4948:4986" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -8588,7 +8596,6 @@
       <find>SwaggerModel</find>
       <find>generateEndpointCode</find>
       <find>forEach</find>
-      <find>generateArrayStringMethod</find>
       <find>type</find>
       <find>getModelName</find>
       <find>console.log</find>
@@ -8596,6 +8603,9 @@
       <find>generateObjectStringMethod</find>
       <find>keys</find>
       <find>getModelByName</find>
+      <find>endpoin</find>
+      <find>new SwaggerEndpoint</find>
+      <find>generateArrayStringMethod</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/node_modules</dir>
@@ -8618,7 +8628,6 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/src/Server.ts" />
-        <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/src/FileManager.ts" />
         <option value="$PROJECT_DIR$/src/SwaggerModel.ts" />
         <option value="$PROJECT_DIR$/src/ResponseType.ts" />
@@ -8630,6 +8639,9 @@
         <option value="$PROJECT_DIR$/src/SwaggerParser.ts" />
         <option value="$PROJECT_DIR$/src/ServerFaker.ts" />
         <option value="$PROJECT_DIR$/src/app.js" />
+        <option value="$PROJECT_DIR$/src/ServerHelper.js" />
+        <option value="$PROJECT_DIR$/ServerHelper.js" />
+        <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/app.js" />
       </list>
     </option>
@@ -8804,7 +8816,7 @@
       <workItem from="1490031182422" duration="3213000" />
       <workItem from="1490043564354" duration="5964000" />
       <workItem from="1490113406971" duration="41182000" />
-      <workItem from="1490378095803" duration="3248000" />
+      <workItem from="1490378095803" duration="10183000" />
     </task>
     <task id="LOCAL-00001" summary="First run.">
       <created>1490114222817</created>
@@ -8862,11 +8874,25 @@
       <option name="project" value="LOCAL" />
       <updated>1490311353875</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="New generator in JS.">
+      <created>1490381388626</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1490381388626</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Fix.">
+      <created>1490382074610</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1490382074610</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59239000" />
+    <option name="totallyTimeSpent" value="66174000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -8879,7 +8905,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32891566" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4313253" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4566265" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -8950,11 +8976,12 @@
     <MESSAGE value="First run." />
     <MESSAGE value="Generate endpoints." />
     <MESSAGE value="Pagination." />
-    <MESSAGE value="Fix." />
     <MESSAGE value="Test." />
     <MESSAGE value="Working inner parse." />
     <MESSAGE value="Changes in fake." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes in fake." />
+    <MESSAGE value="New generator in JS." />
+    <MESSAGE value="Fix." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -8963,24 +8990,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/index.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding>
-            <element signature="e#157#203#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tsconfig.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/index.ts" />
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
@@ -9048,6 +9057,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -9065,17 +9075,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TcpServer.js.map" />
-    <entry file="file://$PROJECT_DIR$/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="40" lean-forward="false" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/FileManager.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
@@ -9121,6 +9125,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="35" lean-forward="true" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
+          <folding>
+            <element signature="e#157#203#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ServerFaker.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -9129,46 +9143,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerFaker.ts">
+    <entry file="file://$PROJECT_DIR$/src/ServerHelper.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="23" column="39" lean-forward="true" selection-start-line="23" selection-start-column="39" selection-end-line="23" selection-end-column="39" />
-          <folding>
-            <element signature="n#!!block;n#generateArrayStringMethod#0;n#ServerFaker#0" expanded="false" />
-            <element signature="n#!!block;n#generateFakeByType#0;n#ServerFaker#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="45">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/SwaggerParser.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="33" column="33" lean-forward="true" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+        <state relative-caret-position="362">
+          <caret line="215" column="5" lean-forward="true" selection-start-line="215" selection-start-column="5" selection-end-line="215" selection-end-column="5" />
           <folding>
             <element signature="n#SwaggerModel#0" expanded="false" />
-            <element signature="n#SwaggerEndpoint#0" expanded="false" />
             <element signature="n#!!block;n#generateFakeByType#0;n#ServerGenerator#0" expanded="false" />
             <element signature="e#11215#12763#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.ts">
+    <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="208">
+          <caret line="40" column="2" lean-forward="true" selection-start-line="40" selection-start-column="2" selection-end-line="40" selection-end-column="2" />
           <folding>
-            <element signature="e#157#203#0" expanded="true" />
+            <marker date="1490390323000" expanded="true" signature="439:480" ph="{...}" />
+            <marker date="1490390323000" expanded="true" signature="4948:4986" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ServerFaker.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="118" column="25" lean-forward="true" selection-start-line="118" selection-start-column="25" selection-end-line="118" selection-end-column="25" />
+          <folding>
+            <element signature="n#!!block;n#generateFakeByType#0;n#ServerFaker#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerHelper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="54" lean-forward="false" selection-start-line="12" selection-start-column="54" selection-end-line="12" selection-end-column="54" />
+          <folding>
+            <element signature="e#223#2192#0" expanded="false" />
+            <element signature="e#276#1666#0" expanded="false" />
+            <element signature="e#1694#1832#0" expanded="false" />
+            <element signature="e#1773#1806#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="34" column="32" lean-forward="false" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
+        <state relative-caret-position="66">
+          <caret line="188" column="37" lean-forward="true" selection-start-line="188" selection-start-column="37" selection-end-line="188" selection-end-column="37" />
           <folding>
+            <element signature="n#!!block;n#generateEndpoints#0" expanded="false" />
+            <element signature="n#!!block;n#getModelName#0" expanded="false" />
             <element signature="n#!!block;n#isSimpleType#0" expanded="false" />
+            <element signature="n#!!block;n#generateFakeByType#0" expanded="false" />
           </folding>
         </state>
       </provider>
