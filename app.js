@@ -9,13 +9,19 @@ var wordsToRemove = ["Dto", "List", "View", "ListView"]
 
 var json = JSON.parse(fs.readFileSync('j.json').toString());
 
-var dto = json['definitions']['PageOfLawFirmList']['properties']
-log(dto)
+var dtos = json['definitions'] //['PageOfLawFirmList']['properties']
+// log(dtos)
 
+for(var d in dtos) {
+    var result = test(dtos[d].properties, 1)
 
-var result = test(dto, 4)
-log("\n WYNIK:")
-log(result)
+    log("\n\n" + d + " \n ")
+    log(result)
+}
+
+// var result = test(dto, 1)
+// log("\n WYNIK:")
+// log(result)
 
 
 
@@ -30,12 +36,12 @@ function test(obj, countInArray) {
                 var refModelName = modelNameIfRefInArray(obj, field)
                 if(refModelName != undefined) {
                     var innerModel = getModelByName(refModelName)
-                    var tempList = []
-                    for(var i=0; i<countInArray; i=i+1) {
-                        var t = test(innerModel, 1)
-                        tempList.push(t)
-                    }
-                    obj[field] = tempList
+                    // var tempList = []
+                    // for(var i=0; i<countInArray; i=i+1) {
+                    //     var t = test(innerModel, 1)
+                    //     tempList.push(t)
+                    // }
+                    obj[field] = test(innerModel, 1)
                 } else { // Lista prostych typów
 
                     var typeInArray = obj[field]['items'].type.replace("[", "")
@@ -49,13 +55,12 @@ function test(obj, countInArray) {
                     var innerModel = json["definitions"][refModelName]
                     obj[field] = test(innerModel)
                 } else {
-                    log("ERROR! Unknown type!")
+                    log("ERROR! Unknown type! : " + obj[field] + " / " + field)
                 }
             }
         }
         idx = idx + 1
     }
-
 
     return obj
 }
@@ -188,4 +193,11 @@ function generateFakeByType(id, type, fieldName) {
 
 function log(msg) {
     console.log(msg)
+}
+
+function clone(obj) {
+    var clone = {};
+    clone.prototype = obj.prototype;
+    for (var property in obj) clone[property] = obj[property];
+    return clone;
 }
