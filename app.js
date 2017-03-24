@@ -67,12 +67,12 @@ function generateServerContentString(endpointsAndModelsList) {
                         var resp = serverHelper.generateFakeArrayResponse(model, testParams)
                         // var response = JSON.stringify(resp)
                         // log("\n\n RESP: " + endpointName)
-                        log(resp)
+                        // log(resp)
 
-                        // var response = "serverHelper.generateFakeArrayResponse(serverHelper.getModelByName('"+modelName+"'), req.query)"
-                        // content = content + "\n \n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
-                        //         "console.log(req.query)\n" +
-                        //     "\tres.status(" + 200 + ").send(\n\t" + response + "\n)\n})"
+                        var response = "serverHelper.generateFakeArrayResponse(serverHelper.getModelByName('"+modelName+"'), req.query)"
+                        content = content + "\n \n" + "server." + method + "('" + endpointName + "', function (req, res) {\n" +
+                                "\tconsole.log(req.query)\n" +
+                            "\tres.status(" + 200 + ").send(\n\t" + response + "\n)})"
                     // }
                 }
             }
