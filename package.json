@@ -2,10 +2,10 @@
   "name": "Swagger-API-Mock",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "faker": "^4.1.0",
-    "fake": "^0.2.2"
+    "json-server": "^0.9.6"
   },
   "devDependencies": {
     "@types/node": "^7.0.8",

@@ -6,20 +6,11 @@ var fs = require('fs');
 var faker = require('faker')
 
 var serverHelper = require('./ServerHelper');
-serverHelper.init()
+serverHelper.init();
 
-var serverPort = 3000
+var serverPort = 3000;
 
-var json = JSON.parse(fs.readFileSync('j.json').toString());
-
-var dtos = json['definitions'] //['PageOfLawFirmList']['properties']
-// log(dtos)
-
-// for(var d in dtos) {
-//     var result = test(dtos[d].properties, 1)
-//     log("\n\n" + d + " \n ")
-//     log(result)
-// }
+var json = serverHelper.getJSON();
 
 var endpointsAndModels = generateEndpoints(json['paths'])
 

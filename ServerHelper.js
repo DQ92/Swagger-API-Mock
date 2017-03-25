@@ -4,7 +4,9 @@
 
 var fs = require('fs');
 var faker = require('faker');
-var json = JSON.parse(fs.readFileSync('j.json').toString());
+
+var swaggerJSONFilename = "swagger.json"
+var json = JSON.parse(fs.readFileSync(swaggerJSONFilename).toString());
 var defaultSize = 10;
 var defaultPage = 0;
 var maxPageCount = 5;
@@ -19,6 +21,10 @@ module.exports = {
 
     init: function () {
         console.log("Helper initialized")
+    },
+
+    getJSON: function () {
+        return json
     },
 
     //details  endpoints
