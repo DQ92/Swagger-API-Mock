@@ -69,11 +69,8 @@ function generateServerContentString(endpointsAndModelsList) {
                     var containsContent = model['content']
 
                     if (containsContent == undefined) { //obiekt
-
-                        log("\n")
                         // log(endpointName)
                         // log(modelName)
-
                         content = content + generateObjectResponseString(modelName, endpointName, method)
 
                     } else if (containsContent["type"] == "array") {
@@ -94,10 +91,10 @@ function generateServerContentString(endpointsAndModelsList) {
 function generateObjectResponseString(modelName, endpointName, method) {
     var m = serverHelper.getModelByName(modelName)
     var resp = serverHelper.generateFakeObjectResponse(m, 44)
-    log("\n\n RESP: " + endpointName)
-    log(m)
-    log("FAKE")
-    log(resp)
+    // log("\n\n RESP: " + endpointName)
+    // log(m)
+    // log("FAKE")
+    // log(resp)
 
     var response = "serverHelper.generateFakeObjectResponse(serverHelper.getModelByName('" + modelName + "'), req.params.id)"
 

@@ -5,9 +5,10 @@
 var fs = require('fs');
 var faker = require('faker');
 var json = JSON.parse(fs.readFileSync('j.json').toString());
-var defaultSize = 10
-var defaultPage = 0
-var maxPageCount = 5
+var defaultSize = 10;
+var defaultPage = 0;
+var maxPageCount = 5;
+var numberOfElementsInInnerList = 2;
 
 
 module.exports = {
@@ -16,27 +17,39 @@ module.exports = {
         console.log("Helper initialized")
     },
 
-    generateFakeObjectResponse: function(obj, paramId) {
+    //details  endpoints
+    generateFakeObjectResponse: function(objOriginal, paramId) {
         if(paramId==undefined) {
             paramId = faker.random.number()
         }
-        paramId = Number(paramId)
+        paramId = Number(paramId);
+
+        var obj = this.clone(objOriginal);
 
         for (var field in obj) {
             var type = obj[field]['type'];
             if (this.isSimpleType(type)) {
-                obj[field] = this.generateFakeByType(paramId, type, field)
+                var f = this.generateFakeByType(paramId, type, field)
+                obj[field] = f
             } else {
                 if (this.isArray(type)) {
+
                     var refModelName = this.modelNameIfRefInArray(obj, field);
                     if (refModelName != undefined) {
                         var innerModel = this.getModelByName(refModelName);
-                        obj[field] = this.generateFakeObjectResponse(innerModel, undefined)
-                    } else { // Lista prostych typów
 
+                        obj[field] = [];
+                        var tempList = [];
+                        for (var i = 1; i <= numberOfElementsInInnerList; i = i + 1) {
+                            var fake = this.generateFakeObjectResponse(innerModel, i);
+                            tempList.push(fake)
+                        }
+                        obj[field] = tempList
+
+                    } else { // Lista prostych typów
                         var typeInArray = obj[field]['items'].type.replace("[", "");
                         typeInArray = typeInArray.replace("]", "");
-                        obj[field] = this.generateFakeList(typeInArray, field, 1)
+                        obj[field] = this.generateFakeList(typeInArray, field, numberOfElementsInInnerList)
                     }
                 } else {
                     //własny typ
@@ -53,23 +66,31 @@ module.exports = {
         return obj
     },
 
-    test: function (obj, loopIdx) {
+    // with content
+    generateFakePageResponse: function (objOriginal, loopIdx) {
         if(loopIdx==undefined) {
             loopIdx = faker.random.number()
         }
-        loopIdx = Number(loopIdx)
+        loopIdx = Number(loopIdx);
+        var obj = this.clone(objOriginal);
 
         var idx = 0;
         for (var field in obj) {
             var type = obj[field]['type'];
             if (this.isSimpleType(type)) {
-                obj[field] = this.generateFakeByType(loopIdx, type, field)
+
+                // for(var i=0; i<5;i=i+1) {
+                    obj[field] = this.generateFakeByType(loopIdx, type, field)
+                // }
             } else {
                 if (this.isArray(type)) {
                     var refModelName = this.modelNameIfRefInArray(obj, field);
                     if (refModelName != undefined) {
+
                         var innerModel = this.getModelByName(refModelName);
-                        obj[field] = this.test(innerModel, loopIdx)
+                        obj[field] = [];
+                        obj[field].push(this.generateFakePageResponse(innerModel, loopIdx))
+
                     } else { // Lista prostych typów
 
                         var typeInArray = obj[field]['items'].type.replace("[", "");
@@ -81,9 +102,9 @@ module.exports = {
                     if (obj[field]['$ref'] != undefined) {
                         var refModelName = this.modelNameIfRefInObject(obj, field);
                         var innerModel = json["definitions"][refModelName];
-                        obj[field] = this.test(innerModel, loopIdx)
+                        obj[field] = this.generateFakePageResponse(innerModel, loopIdx)
                     } else {
-                        //log("ERROR! Unknown type! : " + obj[field] + " / " + field)
+                        // console.log("ERROR! Unknown type! : " + obj[field] + " / " + field)
                     }
                 }
             }
@@ -107,9 +128,12 @@ module.exports = {
             var start = (size * page) + 1;
             var list = [];
 
+            var modelNameContent = this.modelNameIfRefInArray(model, 'content');
+            var modelContent = this.getModelByName(modelNameContent);
+
             for (var idx = start; idx < (size + start); idx++) {
-                var fakeResult = this.test(model, idx);
-                list.push(fakeResult['content'])
+                var fakeResult = this.generateFakeObjectResponse(modelContent, idx);
+                list.push(fakeResult)
             }
 
             var isLast = false;
@@ -121,13 +145,14 @@ module.exports = {
             var response = {
                 "contents": list,
                 'last': isLast,
-                'page': page + 1,
+                'page': page,
                 'size': size
             };
 
             return response
 
         } else {
+            console.log("\n ERROR \n")
             // var result = test(model, 1)
             // return result
         }
@@ -211,13 +236,7 @@ module.exports = {
             if (fieldName.indexOf("phone") !== -1) {
                 return faker.phone.phoneNumber()
             }
-            if (fieldName.indexOf("latitude") !== -1) {
-                return faker.address.latitude()
-            }
-            if (fieldName.indexOf("longitude") !== -1) {
-                return faker.address.longitude()
-            }
-            if (fieldName.indexOf("lead") !== -1) {
+            if (fieldName.indexOf("lead") !== -1 || fieldName.indexOf("title") !== -1) {
                 return faker.lorem.text()
             }
             if (fieldName.indexOf("description") !== -1) {
@@ -226,31 +245,47 @@ module.exports = {
             if (fieldName.indexOf("url") !== -1 || fieldName.indexOf("Url") !== -1) {
                 return faker.internet.url()
             }
+            if (fieldName.indexOf("latitude") !== -1) {
+                return this.generateFakeLatitude()
+            }
+            if (fieldName.indexOf("longitude") !== -1) {
+                return this.generateFakeLongitude()
+            }
             return faker.lorem.words()
         } else if ("integer" == type) {
             if (fieldName.indexOf("id") !== -1 || fieldName.indexOf("Id") !== -1) {
                 return id
             }
-            return 8765
+            return Number(8765)
         } else if ("number" == type) {
             if (fieldName.indexOf("latitude") !== -1) {
-                return faker.address.latitude()
+                return this.generateFakeLatitude()
             }
             if (fieldName.indexOf("longitude") !== -1) {
-                return faker.address.longitude()
+                return this.generateFakeLongitude()
             }
-
-            return faker.random.number()
+            return Number(faker.random.number())
         } else if ("bool" == type || "boolean" == type) {
             return false
         }
-
-
+        
         return fake
     },
 
     generateFakeDate: function (id) {
         return faker.date.past()
+    },
+
+    generateFakeLatitude: function () {
+        var random = Number(faker.random.number());
+        var lat = Number("50.2" + random + "023")
+        return lat
+    },
+
+    generateFakeLongitude: function () {
+        var random = Number(faker.random.number());
+        var lng = Number("20.2" + random + "023")
+        return lng
     },
 
     clone: function (obj) {
