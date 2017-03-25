@@ -10,6 +10,10 @@ var defaultPage = 0;
 var maxPageCount = 5;
 var numberOfElementsInInnerList = 2;
 
+// Tarnów
+var cityLat = "50.0130";
+var cityLng = "20.9658";
+
 
 module.exports = {
 
@@ -278,13 +282,13 @@ module.exports = {
 
     generateFakeLatitude: function () {
         var random = Number(faker.random.number());
-        var lat = Number("50.2" + random + "023")
+        var lat = Number(cityLat + random)
         return lat
     },
 
     generateFakeLongitude: function () {
         var random = Number(faker.random.number());
-        var lng = Number("20.2" + random + "023")
+        var lng = Number(cityLng + random)
         return lng
     },
 
