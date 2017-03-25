@@ -20,6 +20,7 @@ module.exports = {
         if(paramId==undefined) {
             paramId = faker.random.number()
         }
+        paramId = Number(paramId)
 
         for (var field in obj) {
             var type = obj[field]['type'];
@@ -53,6 +54,11 @@ module.exports = {
     },
 
     test: function (obj, loopIdx) {
+        if(loopIdx==undefined) {
+            loopIdx = faker.random.number()
+        }
+        loopIdx = Number(loopIdx)
+
         var idx = 0;
         for (var field in obj) {
             var type = obj[field]['type'];
@@ -157,7 +163,7 @@ module.exports = {
     },
 
     getModelByName: function (name) {
-        return json["definitions"][name].properties
+        return this.clone(json["definitions"][name].properties)
     },
 
     isArray: function (typeStr) {
@@ -245,6 +251,12 @@ module.exports = {
 
     generateFakeDate: function (id) {
         return faker.date.past()
+    },
+
+    clone: function (obj) {
+        var clone = {};
+        for (var property in obj) clone[property] = obj[property];
+        return clone;
     }
 };
 
