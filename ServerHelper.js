@@ -16,18 +16,21 @@ module.exports = {
         console.log("Helper initialized")
     },
 
-    test: function (obj) {
-        var idx = 0;
+    generateFakeObjectResponse: function(obj, paramId) {
+        if(paramId==undefined) {
+            paramId = faker.random.number()
+        }
+
         for (var field in obj) {
             var type = obj[field]['type'];
             if (this.isSimpleType(type)) {
-                obj[field] = this.generateFakeByType(idx, type, field)
+                obj[field] = this.generateFakeByType(paramId, type, field)
             } else {
                 if (this.isArray(type)) {
                     var refModelName = this.modelNameIfRefInArray(obj, field);
                     if (refModelName != undefined) {
                         var innerModel = this.getModelByName(refModelName);
-                        obj[field] = this.test(innerModel)
+                        obj[field] = this.generateFakeObjectResponse(innerModel, undefined)
                     } else { // Lista prostych typów
 
                         var typeInArray = obj[field]['items'].type.replace("[", "");
@@ -39,7 +42,40 @@ module.exports = {
                     if (obj[field]['$ref'] != undefined) {
                         var refModelName = this.modelNameIfRefInObject(obj, field);
                         var innerModel = json["definitions"][refModelName];
-                        obj[field] = this.test(innerModel)
+                        obj[field] = this.generateFakeObjectResponse(innerModel, undefined)
+                    } else {
+                        //log("ERROR! Unknown type! : " + obj[field] + " / " + field)
+                    }
+                }
+            }
+        }
+        return obj
+    },
+
+    test: function (obj, loopIdx) {
+        var idx = 0;
+        for (var field in obj) {
+            var type = obj[field]['type'];
+            if (this.isSimpleType(type)) {
+                obj[field] = this.generateFakeByType(loopIdx, type, field)
+            } else {
+                if (this.isArray(type)) {
+                    var refModelName = this.modelNameIfRefInArray(obj, field);
+                    if (refModelName != undefined) {
+                        var innerModel = this.getModelByName(refModelName);
+                        obj[field] = this.test(innerModel, loopIdx)
+                    } else { // Lista prostych typów
+
+                        var typeInArray = obj[field]['items'].type.replace("[", "");
+                        typeInArray = typeInArray.replace("]", "");
+                        obj[field] = this.generateFakeList(typeInArray, field, 1)
+                    }
+                } else {
+                    //własny typ
+                    if (obj[field]['$ref'] != undefined) {
+                        var refModelName = this.modelNameIfRefInObject(obj, field);
+                        var innerModel = json["definitions"][refModelName];
+                        obj[field] = this.test(innerModel, loopIdx)
                     } else {
                         //log("ERROR! Unknown type! : " + obj[field] + " / " + field)
                     }
@@ -66,7 +102,7 @@ module.exports = {
             var list = [];
 
             for (var idx = start; idx < (size + start); idx++) {
-                var fakeResult = this.test(model);
+                var fakeResult = this.test(model, idx);
                 list.push(fakeResult['content'])
             }
 
@@ -198,10 +234,12 @@ module.exports = {
                 return faker.address.longitude()
             }
 
-            return 9123
+            return faker.random.number()
         } else if ("bool" == type || "boolean" == type) {
             return false
         }
+
+
         return fake
     },
 
